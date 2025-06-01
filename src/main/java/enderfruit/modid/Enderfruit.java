@@ -3,7 +3,12 @@ package enderfruit.modid;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.ItemGroups;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,4 +32,6 @@ public class Enderfruit implements ModInitializer {
 
 		LOGGER.info("Hello Fabric world!");
 	}
+	public static final RegistryEntry<StatusEffect> ENDEREFFECT =
+			Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(MOD_ID, "endereffect"), new EnderEffect());
 }

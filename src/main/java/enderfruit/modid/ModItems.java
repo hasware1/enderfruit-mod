@@ -1,5 +1,6 @@
 package enderfruit.modid;
 
+import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.component.type.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -26,8 +27,8 @@ public class ModItems {
 		return item;
 	}
     public static final Item ENDER_FRUIT = register("ender_fruit",
-			Item::new,
-			new Item.Settings()
+			EnderFruitItem::new,
+			new Item.Settings().maxCount(1)
 					.food(new FoodComponent.Builder()
 							.saturationModifier((float) 2.4)
 							.nutrition(20)
