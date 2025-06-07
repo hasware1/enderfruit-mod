@@ -28,7 +28,7 @@ public class ModItems {
 	}
     public static final Item ENDER_FRUIT = register("ender_fruit",
 			EnderFruitItem::new,
-			new Item.Settings().maxCount(1)
+			new Item.Settings().maxCount(8)
 					.food(new FoodComponent.Builder()
 							.saturationModifier((float) 2.4)
 							.nutrition(20)
@@ -38,7 +38,6 @@ public class ModItems {
     }
 
 }
-
 
 
 

@@ -1,3 +1,4 @@
 {
-  "item.enderfruit.ender_fruit": "Ender Fruit"
+  "item.enderfruit.ender_fruit": "Ender Fruit",
+  "tooltip.enderfruit.ender_fruit.tooltip": "Eat while facing a direction — look upwards to fly. "
 }
