@@ -8,15 +8,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 
 import java.util.function.Consumer;
 
@@ -29,19 +29,34 @@ public class EnderFruitItem extends Item {
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (!world.isClient && user instanceof PlayerEntity player) {
             player.addStatusEffect(new StatusEffectInstance(
-                    StatusEffects.SLOW_FALLING, // The effect type
-                    80, // 10 seconds (200 ticks)
-                    0   // Amplifier level 0 (Levitation I)
+                    StatusEffects.SLOW_FALLING,
+                    80,
+                    0
             ));
         }
-        // upto 20 blocks
+
         HitResult result = user.raycast(30.0, 1.0f, true);
         Vec3d vec3d = result.getPos();
-        user.requestTeleport(
-                vec3d.x,
-                vec3d.y,
-                vec3d.z
-        );
+        user.requestTeleport(vec3d.x, vec3d.y, vec3d.z);
+
+        world.playSound(null, vec3d.x, vec3d.y, vec3d.z, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+
+
+        // Spawn portal particles after teleport
+        if (!world.isClient && world instanceof ServerWorld serverWorld) {
+            for (int i = 0; i < 32; i++) {
+                double offsetX = world.random.nextDouble() - 1.0;
+                double offsetY = world.random.nextDouble() - 1.0;
+                double offsetZ = world.random.nextDouble() - 1.0;
+                serverWorld.spawnParticles(
+                        ParticleTypes.PORTAL,
+                        vec3d.x, vec3d.y + 1.0, vec3d.z,
+                        20,
+                        offsetX, offsetY, offsetZ,
+                        0.5
+                );
+            }
+        }
 
         return super.finishUsing(stack, world, user);
     }
